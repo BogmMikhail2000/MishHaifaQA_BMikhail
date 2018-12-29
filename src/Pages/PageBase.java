@@ -1,29 +1,19 @@
+package Pages;
+
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.AfterSuite;
-import org.testng.annotations.BeforeMethod;
 
 import java.util.Random;
 
-public class TestBaseMish {
+public abstract class PageBase {
+    protected WebDriver driver;
 
-    public WebDriver driver;// = new ChromeDriver();
+    public PageBase(WebDriver driver){
 
-    @BeforeMethod
-    public void initWebDriver() {
-        driver = new ChromeDriver();
-        driver.get("https://mish.sheygam.com/#/wellcome");
-        driver.manage().window().maximize();
-
-    }
-
-    @AfterMethod
-    public void TearDown() {
-        driver.quit();
+        this.driver = driver;
     }
 
 
@@ -37,7 +27,17 @@ public class TestBaseMish {
             e.printStackTrace();
         }
     }
-
+    public void waitUntilElementIsLoaded(WebDriver driver,
+                                         WebElement element, int time)
+    {
+        try {
+            new WebDriverWait(driver, time).until(ExpectedConditions
+                    .visibilityOf(element));
+        }
+        catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 
     protected String latinDigitString(int length) {
         String str = "";
@@ -53,10 +53,7 @@ public class TestBaseMish {
         } while (str.length() < length);
         return str;
 
+
     }
-    }
 
-
-
-
-
+}
